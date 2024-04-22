@@ -18,7 +18,7 @@ def get_datasets(path, version):
 
     df_publications = pd.read_parquet(path + 'ResearchPortal/{}/parquet/publications.parquet'.format(version))
     df_publications_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers_publications.parquet'.format(version))
-    df_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet2/researchers.parquet'.format(version))
+    df_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers.parquet'.format(version))
 
     # join together al the calls (igual que cuando creamos las matrices de similitud)
     df_eic['Call'] = df_eic['id']
