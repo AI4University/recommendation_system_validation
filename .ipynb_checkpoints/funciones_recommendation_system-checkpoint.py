@@ -95,5 +95,5 @@ def recommendation_system_call_researcher(method, agg_method, call, researchers,
     
     similarities = pd.read_parquet(path.format(method, agg_method))
     ranking = match_call_researcher(similarities, call, researchers, n)
-    return ranking[['invID', 'Department', 'Research Group', 'Subjects', 'no Publis', 'similarity']]
+    return ranking[['invID', 'Department', 'Research_Group', 'Subjects', 'no_publis', 'similarity']]
 
