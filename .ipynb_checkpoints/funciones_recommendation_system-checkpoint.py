@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def get_datasets(path, version):
+def get_datasets(path, version_wp, version_rp):
     '''
     Function for importing all the necessary databases for the recommendation system
     
@@ -13,21 +13,24 @@ def get_datasets(path, version):
     df_calls -> Dataset containg all the data related to the calls
     '''
     
-    df_eic = pd.read_parquet(path + 'work_programmes/EIC_work_programmes.parquet')
-    df_horizon = pd.read_parquet(path +'work_programmes/horizon_work_programmes.parquet')
+    df_eic = pd.read_parquet(path + 'work_programmes/20231001/EIC_work_programmes.parquet')
+    df_horizon = pd.read_parquet(path +'work_programmes/{}/horizon_work_programmes.parquet'.format(version_wp))
 
-    df_publications = pd.read_parquet(path + 'ResearchPortal/{}/parquet/publications.parquet'.format(version))
-    df_publications_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers_publications.parquet'.format(version))
-    df_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers.parquet'.format(version))
+    df_publications = pd.read_parquet(path + 'ResearchPortal/{}/parquet/publications.parquet'.format(version_rp))
+    df_publications_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers_publications.parquet'.format(version_rp))
+    df_projects = pd.read_parquet(path + 'ResearchPortal/{}/parquet/projects.parquet'.format(version_rp))
+    df_projects_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers_projects.parquet'.format(version_rp))
+    df_researchers = pd.read_parquet(path + 'ResearchPortal/{}/parquet/researchers.parquet'.format(version_rp))
 
+    
     # join together al the calls (igual que cuando creamos las matrices de similitud)
     df_eic['Call'] = df_eic['id']
     df_calls = pd.concat([df_horizon[['Call', 'Work Programme']], df_eic[['Call', 'Work Programme']]], axis=0).reset_index(drop=True)
 
     
-    return df_publications, df_publications_researchers, df_researchers, df_calls
+    return df_publications, df_projects, df_publications_researchers,df_projects_researchers, df_researchers, df_calls
 
-def match_researcher_call(similarities, researcher, df_calls, n=667):
+def match_researcher_call(similarities, researcher, df_calls, n=766):
     '''
     Function for obtaining the ranking of calls given a researcher 
     
@@ -48,8 +51,8 @@ def match_researcher_call(similarities, researcher, df_calls, n=667):
 
     return df_ranking_calls.head(n)
 
-def recommendation_system_researcher_call(method, agg_method, researcher, calls, n=1129,
-                         path='/export/usuarios_ml4ds/mbalairon/github/recommendation_system/similarity_matrices_researchers/similarity_{}_{}.parquet'):
+def recommendation_system_researcher_call(method, agg_method, researcher, calls, n=766,
+                         path='/export/data_ml4ds/AI4U/Datasets/similarity_matrices/similarity_{}_{}.parquet'):
     '''
     function for obtaining the recommendations of calls given a researcher
     
@@ -60,9 +63,10 @@ def recommendation_system_researcher_call(method, agg_method, researcher, calls,
     
     similarities = pd.read_parquet(path.format(method, agg_method))
     ranking = match_researcher_call(similarities, researcher, calls, n)
-    return ranking[['Call', 'Work Programme', 'similarity']]
+    #return ranking[['Call', 'Work Programme', 'similarity']]
+    return ranking
 
-def match_call_researcher(similarities, call, df_researchers, n=1129):
+def match_call_researcher(similarities, call, df_researchers, n=1227):
     '''
     Function for obtaining the ranking of researchers given a call 
     
@@ -78,13 +82,13 @@ def match_call_researcher(similarities, call, df_researchers, n=1129):
     ranking = pd.DataFrame(ranking).reset_index()
     id_researchers = ranking['index'].to_list()
     similarities = ranking[call].to_list()
-    id_researchers = pd.DataFrame({'invID': id_researchers, 'similarity': similarities})
-    df_ranking_researchers = pd.merge(id_researchers, df_researchers, on='invID', how='inner')
+    id_researchers = pd.DataFrame({'id_researcher': id_researchers, 'similarity': similarities})
+    df_ranking_researchers = pd.merge(id_researchers, df_researchers, on='id_researcher', how='inner')
 
     return df_ranking_researchers.head(n)
 
-def recommendation_system_call_researcher(method, agg_method, call, researchers, n=1402,
-                         path='/export/usuarios_ml4ds/mbalairon/github/recommendation_system/similarity_matrices_researchers/similarity_{}_{}.parquet'):
+def recommendation_system_call_researcher(method, agg_method, call, researchers, n=1227,
+                         path='/export/data_ml4ds/AI4U/Datasets/similarity_matrices/similarity_{}_{}.parquet'):
     '''
     function for obtaining the recommendations of researchers given a call
     
@@ -95,5 +99,6 @@ def recommendation_system_call_researcher(method, agg_method, call, researchers,
     
     similarities = pd.read_parquet(path.format(method, agg_method))
     ranking = match_call_researcher(similarities, call, researchers, n)
-    return ranking[['invID', 'Department', 'Research_Group', 'Subjects', 'no_publis', 'similarity']]
+    #return ranking[['invID', 'Department', 'Research Group', 'Subjects', 'no Publis', 'similarity']]
+    return ranking
 
