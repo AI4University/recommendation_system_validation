@@ -52,7 +52,7 @@ def match_researcher_call(similarities, researcher, df_calls, n=766):
     return df_ranking_calls.head(n)
 
 def recommendation_system_researcher_call(method, agg_method, researcher, calls, n=766,
-                         path='/export/data_ml4ds/AI4U/Datasets/similarity_matrices/similarity_{}_{}.parquet'):
+                         path='/export/data_ml4ds/AI4U/Datasets/similarity_matrices/researchers/similarity_{}_{}.parquet'):
     '''
     function for obtaining the recommendations of calls given a researcher
     
@@ -88,7 +88,7 @@ def match_call_researcher(similarities, call, df_researchers, n=1227):
     return df_ranking_researchers.head(n)
 
 def recommendation_system_call_researcher(method, agg_method, call, researchers, n=1227,
-                         path='/export/data_ml4ds/AI4U/Datasets/similarity_matrices/similarity_{}_{}.parquet'):
+                         path='/export/data_ml4ds/AI4U/Datasets/similarity_matrices/researchers/similarity_{}_{}.parquet'):
     '''
     function for obtaining the recommendations of researchers given a call
     
