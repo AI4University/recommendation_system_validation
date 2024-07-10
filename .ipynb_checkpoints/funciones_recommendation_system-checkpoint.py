@@ -62,6 +62,8 @@ def recommendation_system_researcher_call(method, agg_method, researcher, calls,
     '''
     
     similarities = pd.read_parquet(path.format(method, agg_method))
+    
+    similarities.index = similarities.index.astype(str)
     ranking = match_researcher_call(similarities, researcher, calls, n)
     #return ranking[['Call', 'Work Programme', 'similarity']]
     return ranking
@@ -98,6 +100,7 @@ def recommendation_system_call_researcher(method, agg_method, call, researchers,
     '''
     
     similarities = pd.read_parquet(path.format(method, agg_method))
+    similarities.index = similarities.index.astype(str)
     ranking = match_call_researcher(similarities, call, researchers, n)
     #return ranking[['invID', 'Department', 'Research Group', 'Subjects', 'no Publis', 'similarity']]
     return ranking
