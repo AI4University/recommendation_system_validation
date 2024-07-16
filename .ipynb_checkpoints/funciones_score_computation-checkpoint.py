@@ -12,13 +12,16 @@ def get_score_similarity(ranking, id_researcher, call):
     max_similarity = ranking['similarity'][0]
 
     # detect if we are recommending researchers or calls
-    if 'id_researcher' in ranking.columns.tolist():
-        similarity = ranking[ranking['id_researcher']==id_researcher].reset_index()['similarity'][0]
+    if max_similarity != 0:
+        if 'id_researcher' in ranking.columns.tolist():
+            similarity = ranking[ranking['id_researcher']==id_researcher].reset_index()['similarity'][0]
+        else:
+            similarity = ranking[ranking['Call']==call].reset_index()['similarity'][0]
+
+        return 1 - ((max_similarity - similarity)/max_similarity)
     else:
-        similarity = ranking[ranking['Call']==call].reset_index()['similarity'][0]
-
-    return 1 - ((max_similarity - similarity)/max_similarity)
-
+        return 0
+    
 def get_score_position(ranking, id_researcher, call):
     '''
     Function for obtaining the score based on the position of a recommendation in the ranking
