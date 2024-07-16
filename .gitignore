@@ -5,6 +5,7 @@ __pycache__
 .vscode
 outputs/
 outputs_SI/
+validation_venv
 
 *.zip
 *.pkl
