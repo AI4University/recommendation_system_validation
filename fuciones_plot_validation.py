@@ -50,8 +50,8 @@ def get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers
                 positions_calls.append(ranking_aux.shape[0])
 
             except Exception as e:
-                #print(f'Error: {e}')
-                errores.append(i)
+                print(f'Error: {e}')
+                #errores.append(i)
 
             
         scores_researchers.append([np.mean(scores_similarity_researchers), np.mean(scores_position_researchers), np.mean(scores_department_researchers)])
