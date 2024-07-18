@@ -22,7 +22,7 @@ def get_similarity_publication(sim_matrix):
     
     return df
 
-def agg_mean_imp(sim_matrix, df_calls, df_project_publication_researcher):
+def agg_mean_imp(sim_matrix, df_calls, df_project_publication_researcher, df_researchers):
     '''
     Function for computing the aggregated of all the similarities of  an author considering only the not thresholded ones
     
@@ -55,9 +55,9 @@ def agg_mean_imp(sim_matrix, df_calls, df_project_publication_researcher):
         row = pd.DataFrame(data=[[invID, mean_imp]], columns=['id_RP', 'similarity'])
         result_df = pd.concat([result_df, row])
 
-    return get_sim_matrix(df_calls, result_df)
+    return check_shape(df_researchers, get_sim_matrix(df_calls, result_df))
 
-def agg_sum(sim_matrix, df_calls, df_project_publication_researcher):
+def agg_sum(sim_matrix, df_calls, df_project_publication_researcher, df_researchers):
     '''
     Function for computing the aggregated of all the similarities of  an author considering only the not thresholded ones
     
@@ -78,9 +78,9 @@ def agg_sum(sim_matrix, df_calls, df_project_publication_researcher):
     result_df = df.groupby('id_researcher')['similarity'].sum().reset_index()
     result_df=result_df.rename(columns= {'id_researcher':'id_RP'})
     
-    return get_sim_matrix(df_calls, result_df)
+    return check_shape(df_researchers, get_sim_matrix(df_calls, result_df))
 
-def agg_mean(sim_matrix, df_calls, df_project_publication_researcher):
+def agg_mean(sim_matrix, df_calls, df_project_publication_researcher, df_researchers):
     '''
     Function for computing the aggregated of all the similarities of  an author considering only the not thresholded ones
     
@@ -102,7 +102,7 @@ def agg_mean(sim_matrix, df_calls, df_project_publication_researcher):
     result_df = df.groupby('id_researcher')['similarity'].apply(lambda x: pd.Series(x.values.tolist()).mean()).reset_index()
     result_df=result_df.rename(columns= {'id_researcher':'id_RP'})
 
-    return get_sim_matrix(df_calls, result_df)
+    return check_shape(df_researchers, get_sim_matrix(df_calls, result_df))
 
 def get_sim_matrix(df_calls, df_researchers):
     '''
@@ -120,3 +120,19 @@ def get_sim_matrix(df_calls, df_researchers):
     df = pd.DataFrame(sim, columns=keys_calls, index=keys_res)
     
     return df
+
+
+def check_shape(df_researchers, sim_matrix):
+    '''
+    Function for adding all the researchers to the similarty matrix 
+    
+    df_researchers -> Dataframe containing the researchers and the similarity with each of the publications
+    sim_matrix -> Similarity matrix to complete
+    '''
+    to_add = [0] * sim_matrix.shape[1]
+    for idx in df_researchers['id_researcher'].tolist():
+        if idx not in sim_matrix.index:
+            sim_matrix.loc[idx] = to_add
+
+    sim_matrix.index = sim_matrix.index.astype(int)
+    return sim_matrix

@@ -1,23 +1,34 @@
 from funciones_score_computation import get_score_similarity, get_score_position, get_score_cluster
 from funciones_recommendation_system import get_datasets, match_researcher_call, recommendation_system_researcher_call, match_call_researcher, recommendation_system_call_researcher
+from funciones_filters_recommendation_system import filter_by_num_publis
+from funciones_match import agg_sum, agg_mean, agg_mean_imp
+
 import numpy as np
 from matplotlib import pyplot as plt 
+import pandas as pd
+import traceback
 
-def get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers, df_calls):
+
+def get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers, df_calls, df_project_publication_researcher, num_publis, num_IP, combined):
     '''
     Function for obtaining the dictionary of the scores and the postions results for recommendations of calls or researchers
 
     df -> Dataset containing the validation calls and researchers
     agg_methods -> List containing the different aggregation methods to compare
     method -> Method to obtain the recommendations
-    df_researchers, df_calls -> Datasets containing the information regarding researchers and calls
+    df_researchers, df_calls, df_project_publication_researcher -> Datasets containing the information regarding researchers and calls
     '''
+    
     dict_results_researchers = {}
     dict_results_calls = {}
     scores_researchers = []
     scores_calls = []
     
     errores = []
+
+    path = '/export/data_ml4ds/AI4U/Datasets/similarity_matrices/researchers_filtered_{}/similarity_{}_{}.parquet'
+
+        
     for agg_method in agg_methods:
         positions_researchers, positions_calls, scores_similarity_researchers, scores_similarity_calls, scores_position_researchers, scores_position_calls, scores_department_researchers,  scores_cluster_calls = [], [], [], [], [], [], [], []
         for i in df.index:
@@ -25,8 +36,21 @@ def get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers
                 invID = df['id_researcher'][i]
                 call = df['Línea prioritia/panel/topic'][i]   
 
-                ranking_researchers = recommendation_system_call_researcher(method=method, agg_method=agg_method, call=call, researchers=df_researchers)
-                ranking_calls = recommendation_system_researcher_call(method=method, agg_method=agg_method, researcher=invID, calls=df_calls)
+                if num_publis:
+                    ranking_researchers = recommendation_system_call_researcher(method=method, agg_method=agg_method, call=call, researchers=df_researchers, path=path.format('num_publis', method, agg_method))
+                    ranking_calls = recommendation_system_researcher_call(method=method, agg_method=agg_method, researcher=invID, calls=df_calls, path=path.format('num_publis', method, agg_method))
+
+                elif num_IP:
+                    ranking_researchers = recommendation_system_call_researcher(method=method, agg_method=agg_method, call=call, researchers=df_researchers, path=path.format('num_IP', method, agg_method))
+                    ranking_calls = recommendation_system_researcher_call(method=method, agg_method=agg_method, researcher=invID, calls=df_calls, path=path.format('num_IP', method, agg_method))
+                
+                elif combined:
+                    ranking_researchers = recommendation_system_call_researcher(method=method, agg_method=agg_method, call=call, researchers=df_researchers, path=path.format('combined', method, agg_method))
+                    ranking_calls = recommendation_system_researcher_call(method=method, agg_method=agg_method, researcher=invID, calls=df_calls, path=path.format('combined', method, agg_method))
+                       
+                else:
+                    ranking_researchers = recommendation_system_call_researcher(method=method, agg_method=agg_method, call=call, researchers=df_researchers)
+                    ranking_calls = recommendation_system_researcher_call(method=method, agg_method=agg_method, researcher=invID, calls=df_calls)
 
                 # score similarity
                 scores_similarity_researchers.append(get_score_similarity(ranking_researchers, invID, call))
@@ -51,6 +75,7 @@ def get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers
 
             except Exception as e:
                 #print(f'Error: {e}')
+                #print(traceback.format_exc())
                 errores.append(i)
 
             
@@ -62,7 +87,7 @@ def get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers
 
     return scores_researchers, scores_calls, dict_results_researchers, dict_results_calls
 
-def obtain_data_agg_methods(df, agg_methods, method, df_researchers, df_calls):
+def obtain_data_agg_methods(df, agg_methods, method, df_researchers, df_calls, df_project_publication_researcher, num_publis, num_IP, combined):
     '''    
     Function for obtaining the lists with the data to plot for comparing the different aggregation methods
 
@@ -72,7 +97,8 @@ def obtain_data_agg_methods(df, agg_methods, method, df_researchers, df_calls):
 
     '''
     # obtain the dictionaries 
-    scores_researchers, scores_calls, dict_results_researchers, dict_results_calls = get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers, df_calls)
+    #print('llamo a la función para obtener los diccionarios')
+    scores_researchers, scores_calls, dict_results_researchers, dict_results_calls = get_dictionaries_compare_agg_methods(df, agg_methods, method, df_researchers, df_calls, df_project_publication_researcher, num_publis, num_IP, combined)
 
     researchers_sum = dict_results_researchers['{}_sum'.format(method)]
     researchers_mean = dict_results_researchers['{}_mean'.format(method)]
@@ -84,7 +110,7 @@ def obtain_data_agg_methods(df, agg_methods, method, df_researchers, df_calls):
     
     
     #return researchers_sum, calls_sum
-    return researchers_sum, researchers_mean, researchers_mean_imp, calls_sum, calls_mean, calls_mean_imp
+    return researchers_sum, researchers_mean, researchers_mean_imp, calls_sum, calls_mean, calls_mean_imp, scores_researchers, scores_calls
 
 def get_plot_comparison_agg_methods(ax, method, sum, mean, mean_imp):
     '''
@@ -143,7 +169,6 @@ def get_plot_comparison_methods(ax, agg_method, bert, bhattacharyya, separated, 
     ax.legend(fontsize=24)
     ax.tick_params(axis='both', which='major', labelsize=20)
     ax.grid(True)
-
 
 def contar_repeticiones(lista):
     '''

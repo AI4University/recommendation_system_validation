@@ -17,6 +17,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+val_venv/
 
 # Keep directories
 !dbManager/

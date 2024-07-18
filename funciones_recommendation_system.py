@@ -41,13 +41,20 @@ def match_researcher_call(similarities, researcher, df_calls, n=766):
     
     df_ranking_calls -> Dataset with the ranking of recommended calls for a given researcher
     '''
-    
-    ranking = similarities.transpose()[int(researcher)].sort_values(ascending=False).fillna(0)
-    ranking = pd.DataFrame(ranking).reset_index()
-    id_calls = ranking['index'].to_list()
-    similarities = ranking[int(researcher)].to_list()
-    id_calls = pd.DataFrame({'Call': id_calls, 'similarity': similarities})
-    df_ranking_calls = pd.merge(id_calls, df_calls, on='Call', how='inner')
+    try:
+        ranking = similarities.transpose()[(researcher)].sort_values(ascending=False).fillna(0)
+        ranking = pd.DataFrame(ranking).reset_index()
+        id_calls = ranking['index'].to_list()
+        similarities = ranking[(researcher)].to_list()
+        id_calls = pd.DataFrame({'Call': id_calls, 'similarity': similarities})
+        df_ranking_calls = pd.merge(id_calls, df_calls, on='Call', how='inner')
+    except:
+        ranking = similarities.transpose()[int(researcher)].sort_values(ascending=False).fillna(0)
+        ranking = pd.DataFrame(ranking).reset_index()
+        id_calls = ranking['index'].to_list()
+        similarities = ranking[int(researcher)].to_list()
+        id_calls = pd.DataFrame({'Call': id_calls, 'similarity': similarities})
+        df_ranking_calls = pd.merge(id_calls, df_calls, on='Call', how='inner')
 
     return df_ranking_calls.head(n)
 
@@ -104,4 +111,6 @@ def recommendation_system_call_researcher(method, agg_method, call, researchers,
     ranking = match_call_researcher(similarities, call, researchers, n)
     #return ranking[['invID', 'Department', 'Research Group', 'Subjects', 'no Publis', 'similarity']]
     return ranking
+
+
 
