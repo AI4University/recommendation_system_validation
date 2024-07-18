@@ -112,7 +112,7 @@ def obtain_data_agg_methods(df, agg_methods, method, df_researchers, df_calls, d
     #return researchers_sum, calls_sum
     return researchers_sum, researchers_mean, researchers_mean_imp, calls_sum, calls_mean, calls_mean_imp, scores_researchers, scores_calls
 
-def get_plot_comparison_agg_methods(ax, method, sum, mean, mean_imp):
+def get_plot_comparison_agg_methods(ax, method, sum, mean, mean_imp, title=None):
     '''
     Function for plotting the comparison graph of the different aggregation methods for a given method of recommendation
 
@@ -128,18 +128,21 @@ def get_plot_comparison_agg_methods(ax, method, sum, mean, mean_imp):
     cumulative_mean = np.cumsum(values_mean)
     cumulative_mean_imp = np.cumsum(values_mean_imp)
 
-    ax.plot(keys_sum, cumulative_sum, marker='o', color='blue', label='{}_sum'.format(method))
-    ax.plot(keys_mean, cumulative_mean, marker='s', color='red', label='{}_mean'.format(method))
+    ax.plot(keys_sum, cumulative_sum, marker='s', color='blue', label='{}_sum'.format(method))
+    ax.plot(keys_mean, cumulative_mean, marker='o', color='red', label='{}_mean'.format(method))
     ax.plot(keys_mean_imp, cumulative_mean_imp, marker='^', color='green', label='{}_mean_imp'.format(method))
 
     ax.set_xlabel('Depth', fontsize=26)
     ax.set_ylabel('Cumulative Frequency', fontsize=26)
-    ax.set_title('Cumulative Accuracy with {} method'.format(method), fontsize=30)
+    if title:
+        ax.set_title(title, fontsize=30)
+    else:
+        ax.set_title('Cumulative Accuracy with {} method'.format(method), fontsize=30)
     ax.legend(fontsize=24)
     ax.tick_params(axis='both', which='major', labelsize=20)
     ax.grid(True)
 
-def get_plot_comparison_methods(ax, agg_method, bert, bhattacharyya, separated, semiseparated):
+def get_plot_comparison_methods(ax, agg_method, bert, bhattacharyya, separated, semiseparated, title=None):
     '''
     Function for plotting the comparison graph of the different methods of recommendation for a given aggregation method
 
@@ -158,14 +161,18 @@ def get_plot_comparison_methods(ax, agg_method, bert, bhattacharyya, separated, 
     cumulative_separated = np.cumsum(values_separated)
     cumulative_semiseparated = np.cumsum(values_semiseparated)
 
-    ax.plot(keys_BERT, cumulative_BERT, marker='o', color='blue', label='BERT_{}'.format(agg_method))
-    ax.plot(keys_bhattacharyya, cumulative_bhattacharyya, marker='s', color='red', label='bhattacharyya_{}'.format(agg_method))
+    ax.plot(keys_BERT, cumulative_BERT, marker='s', color='blue', label='BERT_{}'.format(agg_method))
+    ax.plot(keys_bhattacharyya, cumulative_bhattacharyya, marker='o', color='red', label='bhattacharyya_{}'.format(agg_method))
     ax.plot(keys_separated, cumulative_separated, marker='^', color='green', label='separated_{}'.format(agg_method))
     ax.plot(keys_semiseparated, cumulative_semiseparated, marker='+', color='orange', label='semiseparated_{}'.format(agg_method))
 
     ax.set_xlabel('Depth', fontsize=26)
     ax.set_ylabel('Cumulative Frequency', fontsize=26)
-    ax.set_title('Cumulative Accuracy with {} aggregation method'.format(agg_method), fontsize=30)
+    if title:
+        ax.set_title(title, fontsize=30)
+
+    else:
+        ax.set_title('Cumulative Accuracy with {} aggregation method'.format(agg_method), fontsize=30)
     ax.legend(fontsize=24)
     ax.tick_params(axis='both', which='major', labelsize=20)
     ax.grid(True)
