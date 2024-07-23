@@ -8,6 +8,8 @@ def get_score_similarity(ranking, id_researcher, call):
     ranking -> ranking of recommendations 
     id_researcher -> target researcher
     call -> target call
+                score_similarity = 1 - ((max_similarity - similarity)/max_similarity)    
+
     '''
     max_similarity = ranking['similarity'][0]
 
@@ -30,7 +32,8 @@ def get_score_position(ranking, id_researcher, call):
     id_researcher -> target researcher
     call -> target call
     '''
-
+    total_recommendations = ranking.shape[0]
+    
     # detect if we are recommending researchers or calls
     if 'id_researcher' in ranking.columns.tolist():
         similarity = ranking[ranking['id_researcher']==id_researcher].reset_index()['similarity'][0]
@@ -42,7 +45,7 @@ def get_score_position(ranking, id_researcher, call):
         indice_valor_exacto = ranking.loc[ranking['Call'] == call].index[0]
         ranking = ranking.iloc[:indice_valor_exacto + 1]
 
-    total_recommendations = ranking.shape[0]
+    #total_recommendations = ranking.shape[0]
     posicion = ranking.shape[0]
 
     if similarity == 0: 

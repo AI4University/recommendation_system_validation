@@ -181,10 +181,12 @@ with tab2:
         
         if recommendations == 'Researchers':
             get_plot_comparison_agg_methods(ax, method, researchers_sum_bert, researchers_mean_bert, researchers_mean_imp_bert)
-            #st.table(results_researchers_bert)
+            
+            st.table(results_researchers_bert)
         elif recommendations == 'Calls':
             get_plot_comparison_agg_methods(ax, method, calls_sum_bert, calls_mean_bert, calls_mean_imp_bert)
-            #st.table(results_calls_bert)
+            
+            st.table(results_calls_bert)
 
         st.pyplot(fig)
 
@@ -194,10 +196,12 @@ with tab2:
         
         if recommendations == 'Researchers':
             get_plot_comparison_agg_methods(ax, method, researchers_sum_bhattacharyya, researchers_mean_bhattacharyya, researchers_mean_imp_bhattacharyya)
-            #st.table(results_researchers_bhattacharyya)
+            
+            st.table(results_researchers_bhattacharyya)
         elif recommendations == 'Calls':
             get_plot_comparison_agg_methods(ax, method, calls_sum_bhattacharyya, calls_mean_bhattacharyya, calls_mean_imp_bhattacharyya)
-            #st.table(results_calls_bhattacharyya)
+            
+            st.table(results_calls_bhattacharyya)
 
         st.pyplot(fig)
 
@@ -207,10 +211,10 @@ with tab2:
         
         if recommendations == 'Researchers':
             get_plot_comparison_agg_methods(ax, method, researchers_sum_separated, researchers_mean_separated, researchers_mean_imp_separated)
-            #st.table(results_researchers_separated)
+            st.table(results_researchers_separated)
         elif recommendations == 'Calls':
             get_plot_comparison_agg_methods(ax, method, calls_sum_separated, calls_mean_separated, calls_mean_imp_separated)
-            #st.table(results_calls_separated)
+            st.table(results_calls_separated)
 
         st.pyplot(fig)
 
@@ -220,10 +224,10 @@ with tab2:
         
         if recommendations == 'Researchers':
             get_plot_comparison_agg_methods(ax, method, researchers_sum_semiseparated, researchers_mean_semiseparated, researchers_mean_imp_semiseparated)
-            #st.table(results_researchers_semiseparated)
+            st.table(results_researchers_semiseparated)
         elif recommendations == 'Calls':
             get_plot_comparison_agg_methods(ax, method, calls_sum_semiseparated, calls_mean_semiseparated, calls_mean_imp_semiseparated)
-            #st.table(results_calls_semiseparated)
+            st.table(results_calls_semiseparated)
 
         st.pyplot(fig)
 with tab3:
@@ -278,36 +282,36 @@ with tab4:
         if recommendations == 'Researchers':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bert, researchers_mean_bert, researchers_mean_imp_bert, title)
-                #st.table(results_researchers_bert)
+                st.table(results_researchers_bert)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bhattacharyya, researchers_mean_bhattacharyya, researchers_mean_imp_bhattacharyya, title)
-                #st.table(results_researchers_bhattacharyya)
+                st.table(results_researchers_bhattacharyya)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_separated, researchers_mean_separated, researchers_mean_imp_separated, title)
-                #st.table(results_researchers_separated)
+                st.table(results_researchers_separated)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_semiseparated, researchers_mean_semiseparated, researchers_mean_imp_semiseparated, title)
-                #st.table(results_researchers_semiseparated)
+                st.table(results_researchers_semiseparated)
 
         elif recommendations == 'Calls':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bert, calls_mean_bert, calls_mean_imp_bert, title)
-                #st.table(results_calls_bert)
+                st.table(results_calls_bert)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bhattacharyya, calls_mean_bhattacharyya, calls_mean_imp_bhattacharyya, title)
-                #st.table(results_calls_bhattacharyya)
+                st.table(results_calls_bhattacharyya)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_separated, calls_mean_separated, calls_mean_imp_separated, title)
-                #st.table(results_calls_separated)
+                st.table(results_calls_separated)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_semiseparated, calls_mean_semiseparated, calls_mean_imp_semiseparated, title)
-                #st.table(results_calls_semiseparated)
+                st.table(results_calls_semiseparated)
 
         st.pyplot(fig)
 
@@ -318,36 +322,36 @@ with tab4:
         if recommendations == 'Researchers':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bert_num_publis, researchers_mean_bert_num_publis, researchers_mean_imp_bert_num_publis, title)
-                #st.table(results_researchers_bert_num_publis)
+                st.table(results_researchers_bert_num_publis)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bhattacharyya_num_publis, researchers_mean_bhattacharyya_num_publis, researchers_mean_imp_bhattacharyya_num_publis, title)
-                #st.table(results_researchers_bhattacharyya_num_publis)
+                st.table(results_researchers_bhattacharyya_num_publis)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_separated_num_publis, researchers_mean_separated_num_publis, researchers_mean_imp_separated_num_publis, title)
-                #st.table(results_researchers_separated_num_publis)
+                st.table(results_researchers_separated_num_publis)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_semiseparated_num_publis, researchers_mean_semiseparated_num_publis, researchers_mean_imp_semiseparated_num_publis, title)
-                #st.table(results_researchers_semiseparated_num_publis)
+                st.table(results_researchers_semiseparated_num_publis)
 
         elif recommendations == 'Calls':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bert_num_publis, calls_mean_bert_num_publis, calls_mean_imp_bert_num_publis, title)
-                #st.table(results_calls_bert_num_publis)
+                st.table(results_calls_bert_num_publis)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bhattacharyya_num_publis, calls_mean_bhattacharyya_num_publis, calls_mean_imp_bhattacharyya_num_publis, title)
-                #st.table(results_calls_bhattacharyya_num_publis)
+                st.table(results_calls_bhattacharyya_num_publis)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_separated_num_publis, calls_mean_separated_num_publis, calls_mean_imp_separated_num_publis, title)
-                #st.table(results_calls_separated_num_publis)
+                st.table(results_calls_separated_num_publis)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_semiseparated_num_publis, calls_mean_semiseparated_num_publis, calls_mean_imp_semiseparated_num_publis, title)
-                #st.table(results_calls_semiseparated_num_publis)
+                st.table(results_calls_semiseparated_num_publis)
 
         st.pyplot(fig)
     
@@ -357,36 +361,36 @@ with tab4:
         if recommendations == 'Researchers':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bert_num_IP, researchers_mean_bert_num_IP, researchers_mean_imp_bert_num_IP, title)
-                #st.table(results_researchers_bert_num_IP)
+                st.table(results_researchers_bert_num_IP)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bhattacharyya_num_IP, researchers_mean_bhattacharyya_num_IP, researchers_mean_imp_bhattacharyya_num_IP, title)
-                #st.table(results_researchers_bhattacharyya_num_IP)
+                st.table(results_researchers_bhattacharyya_num_IP)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_separated_num_IP, researchers_mean_separated_num_IP, researchers_mean_imp_separated_num_IP, title)
-                #st.table(results_researchers_separated_num_IP)
+                st.table(results_researchers_separated_num_IP)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_semiseparated_num_IP, researchers_mean_semiseparated_num_IP, researchers_mean_imp_semiseparated_num_IP, title)
-                #st.table(results_researchers_semiseparated_num_IP)
+                st.table(results_researchers_semiseparated_num_IP)
 
         elif recommendations == 'Calls':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bert_num_IP, calls_mean_bert_num_IP, calls_mean_imp_bert_num_IP, title)
-                #st.table(results_calls_bert_num_IP)
+                st.table(results_calls_bert_num_IP)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bhattacharyya_num_IP, calls_mean_bhattacharyya_num_IP, calls_mean_imp_bhattacharyya_num_IP, title)
-                #st.table(results_calls_bhattacharyya_num_IP)
+                st.table(results_calls_bhattacharyya_num_IP)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_separated_num_IP, calls_mean_separated_num_IP, calls_mean_imp_separated_num_IP, title)
-                #st.table(results_calls_separated_num_IP)
+                st.table(results_calls_separated_num_IP)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_semiseparated_num_IP, calls_mean_semiseparated_num_IP, calls_mean_imp_semiseparated_num_IP, title)
-                #st.table(results_calls_semiseparated_num_IP)
+                st.table(results_calls_semiseparated_num_IP)
 
 
         st.pyplot(fig)
@@ -398,36 +402,36 @@ with tab4:
         if recommendations == 'Researchers':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bert_combined, researchers_mean_bert_combined, researchers_mean_imp_bert_combined, title)
-                #st.table(results_researchers_bert_combined)
+                st.table(results_researchers_bert_combined)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_bhattacharyya_combined, researchers_mean_bhattacharyya_combined, researchers_mean_imp_bhattacharyya_combined, title)
-                #st.table(results_researchers_bhattacharyya_combined)
+                st.table(results_researchers_bhattacharyya_combined)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_separated_combined, researchers_mean_separated_combined, researchers_mean_imp_separated_combined, title)
-                #st.table(results_researchers_separated_combined)
+                st.table(results_researchers_separated_combined)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, researchers_sum_semiseparated_combined, researchers_mean_semiseparated_combined, researchers_mean_imp_semiseparated_combined, title)
-                #st.table(results_researchers_semiseparated_combined)
+                st.table(results_researchers_semiseparated_combined)
 
         elif recommendations == 'Calls':
             if method == 'BERT':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bert_combined, calls_mean_bert_combined, calls_mean_imp_bert_combined, title)
-                #st.table(results_calls_bert_combined)
+                st.table(results_calls_bert_combined)
             
             if method == 'bhattacharyya':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_bhattacharyya_combined, calls_mean_bhattacharyya_combined, calls_mean_imp_bhattacharyya_combined, title)
-                #st.table(results_calls_bhattacharyya_combined)
+                st.table(results_calls_bhattacharyya_combined)
             
             if method == 'separated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_separated_combined, calls_mean_separated_combined, calls_mean_imp_separated_combined, title)
-                #st.table(results_calls_separated_combined)
+                st.table(results_calls_separated_combined)
             
             if method =='semiseparated':
                 get_plot_comparison_agg_methods(ax, method, calls_sum_semiseparated_combined, calls_mean_semiseparated_combined, calls_mean_imp_semiseparated_combined, title)
-                #st.table(results_calls_semiseparated_combined)
+                st.table(results_calls_semiseparated_combined)
 
         st.pyplot(fig)
 with tab5:
