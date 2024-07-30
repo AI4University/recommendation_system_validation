@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from funciones_recommendation_system import get_datasets
-from funciones_plot_validation import obtain_data_agg_methods, get_plot_comparison_agg_methods, get_plot_comparison_methods
+from funciones_plot_validation import obtain_data_agg_methods, get_plot_comparison_agg_methods, get_plot_comparison_methods, get_plot_comparison_filters
 
 def convert_to_str(val):
     if isinstance(val, float):
@@ -36,7 +36,7 @@ agg_methods = ['sum', 'mean', 'mean_imp']
 methods = ['BERT', 'bhattacharyya', 'separated', 'semiseparated']
 
 # Función para obtener datos agregados (cacheada)
-@st.cache_data(persist=True)
+@st.cache_data(persist=False)
 def obtain_data_cached(df_val, agg_methods, method, df_researchers, df_calls, df_project_publication_researcher, num_publis, num_IP, combined):
     return obtain_data_agg_methods(df_val, agg_methods, method, df_researchers, df_calls, df_project_publication_researcher, num_publis, num_IP, combined)
 
@@ -122,7 +122,7 @@ results_calls_semiseparated_combined = pd.DataFrame(index=agg_methods, columns=[
 
 
 # Tabs para comparar métodos de agregación y métodos de recomendación
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Validation researchers analysis", "Compare aggregation methods", "Compare recommendations methods", "Compare Filters - Aggregation Methods",  "Compare Filters - Recommendation Methods"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Validation researchers analysis", "Compare aggregation methods", "Compare recommendations methods", "Compare Filters",  "Compare Filters - Aggregation Methods",  "Compare Filters - Recommendation Methods"])
 
 with tab1:
     df_plot = df_val.merge(df_researchers, on='id_researcher')[['id_researcher', 'no_publis', 'Projects_IP', 'Projects_no_IP']]
@@ -261,6 +261,110 @@ with tab3:
 
             st.pyplot(fig)
 with tab4:
+    # Selección el método a comparar
+    selectbox_key1 = st.empty()  # Genera un contenedor vacío para poder actualizar el selectbox más tarde
+    with selectbox_key1:
+        recommendations = st.selectbox('Select which recommendations to obtain:', ['Researchers', 'Calls'], key='selectbox_tab6')  # Añade una key única
+
+    selectbox_key2 = st.empty()  # Genera un contenedor vacío para poder actualizar el selectbox más tarde
+    with selectbox_key2:
+        method = st.selectbox('Select a method to obtain recommendations:', methods, key='selectbox_methods_tab6')  # Añade una key única
+
+    selectbox_key3 = st.empty()  # Genera un contenedor vacío para poder actualizar el selectbox más tarde
+    with selectbox_key3:
+        agg_method = st.selectbox('Select an aggregation method to obtain recommendations:', agg_methods, key='selectbox_agg_methodsmethods_tab6')  # Añade una key única
+
+    st.title('Comparison of the effects of different filters on the aggegation methods when recommending {} with {}'.format(recommendations, method))
+
+    title = 'comparison of filters for {}_{}'
+    fig, ax = plt.subplots(figsize=(15, 10))  
+    
+    if recommendations == 'Researchers':
+        if method == 'BERT':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, researchers_sum_bert, researchers_sum_bert_num_publis, researchers_sum_bert_num_IP, researchers_sum_bert_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_bert, researchers_mean_bert_num_publis, researchers_mean_bert_num_IP, researchers_mean_bert_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_imp_bert, researchers_mean_imp_bert_num_publis, researchers_mean_imp_bert_num_IP, researchers_mean_imp_bert_combined, title.format(method, agg_method))
+
+        elif method == 'bhattacharyya':
+            if agg_method == 'sum':
+                 get_plot_comparison_filters(ax, agg_method, researchers_sum_bhattacharyya, researchers_sum_bhattacharyya_num_publis, researchers_sum_bhattacharyya_num_IP, researchers_sum_bhattacharyya_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_bhattacharyya, researchers_mean_bhattacharyya_num_publis, researchers_mean_bhattacharyya_num_IP, researchers_mean_bhattacharyya_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_imp_bhattacharyya, researchers_mean_imp_bhattacharyya_num_publis, researchers_mean_imp_bhattacharyya_num_IP, researchers_mean_imp_bhattacharyya_combined, title.format(method, agg_method))
+
+        elif method == 'separated':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, researchers_sum_separated, researchers_sum_separated_num_publis, researchers_sum_separated_num_IP, researchers_sum_separated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_separated, researchers_mean_separated_num_publis, researchers_mean_separated_num_IP, researchers_mean_separated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_imp_separated, researchers_mean_imp_separated_num_publis, researchers_mean_imp_separated_num_IP, researchers_mean_imp_separated_combined, title.format(method, agg_method))
+
+
+        elif method == 'semiseparated':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, researchers_sum_semiseparated, researchers_sum_semiseparated_num_publis, researchers_sum_semiseparated_num_IP, researchers_sum_semiseparated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_semiseparated, researchers_mean_semiseparated_num_publis, researchers_mean_semiseparated_num_IP, researchers_mean_semiseparated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, researchers_mean_imp_semiseparated, researchers_mean_imp_semiseparated_num_publis, researchers_mean_imp_semiseparated_num_IP, researchers_mean_imp_semiseparated_combined, title.format(method, agg_method))
+
+    elif recommendations == 'Calls':
+        if method == 'BERT':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, calls_sum_bert, calls_sum_bert_num_publis, calls_sum_bert_num_IP, calls_sum_bert_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_bert, calls_mean_bert_num_publis, calls_mean_bert_num_IP, calls_mean_bert_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_imp_bert, calls_mean_imp_bert_num_publis, calls_mean_imp_bert_num_IP, calls_mean_imp_bert_combined, title.format(method, agg_method))
+
+        elif method == 'bhattacharyya':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, calls_sum_bhattacharyya, calls_sum_bhattacharyya_num_publis, calls_sum_bhattacharyya_num_IP, calls_sum_bhattacharyya_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_bhattacharyya, calls_mean_bhattacharyya_num_publis, calls_mean_bhattacharyya_num_IP, calls_mean_bhattacharyya_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_imp_bhattacharyya, calls_mean_imp_bhattacharyya_num_publis, calls_mean_imp_bhattacharyya_num_IP, calls_mean_imp_bhattacharyya_combined, title.format(method, agg_method))
+
+        elif method == 'separated':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, calls_sum_separated, calls_sum_separated_num_publis, calls_sum_separated_num_IP, calls_sum_separated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_separated, calls_mean_separated_num_publis, calls_mean_separated_num_IP, calls_mean_separated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_imp_separated, calls_mean_imp_separated_num_publis, calls_mean_imp_separated_num_IP, calls_mean_imp_separated_combined, title.format(method, agg_method))
+
+
+        elif method == 'semiseparated':
+            if agg_method == 'sum':
+                get_plot_comparison_filters(ax, agg_method, calls_sum_semiseparated, calls_sum_semiseparated_num_publis, calls_sum_semiseparated_num_IP, calls_sum_semiseparated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_semiseparated, calls_mean_semiseparated_num_publis, calls_mean_semiseparated_num_IP, calls_mean_semiseparated_combined, title.format(method, agg_method))
+
+            elif agg_method == 'mean_imp':
+                get_plot_comparison_filters(ax, agg_method, calls_mean_imp_semiseparated, calls_mean_imp_semiseparated_num_publis, calls_mean_imp_semiseparated_num_IP, calls_mean_imp_semiseparated_combined, title.format(method, agg_method))
+
+    st.pyplot(fig)
+with tab5:
     # Selección el método a comparar
     selectbox_key1 = st.empty()  # Genera un contenedor vacío para poder actualizar el selectbox más tarde
     with selectbox_key1:
@@ -434,7 +538,7 @@ with tab4:
                 st.table(results_calls_semiseparated_combined)
 
         st.pyplot(fig)
-with tab5:
+with tab6:
     # Selección el método a comparar
     selectbox_key1 = st.empty()  # Genera un contenedor vacío para poder actualizar el selectbox más tarde
     with selectbox_key1:
@@ -535,3 +639,5 @@ with tab5:
                 get_plot_comparison_methods(ax, agg_method, calls_mean_imp_bert_combined, calls_mean_imp_bhattacharyya_combined, calls_mean_imp_separated_combined, calls_mean_imp_semiseparated_combined, title)
 
         st.pyplot(fig)
+
+

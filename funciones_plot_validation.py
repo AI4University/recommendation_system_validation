@@ -177,6 +177,38 @@ def get_plot_comparison_methods(ax, agg_method, bert, bhattacharyya, separated, 
     ax.tick_params(axis='both', which='major', labelsize=20)
     ax.grid(True)
 
+def get_plot_comparison_filters(ax, agg_method, bert, bhattacharyya, separated, semiseparated, title=None):
+    '''
+    Function for plotting the comparison graph of the different methods of recommendation for a given aggregation method
+
+    ax -> plot 
+    agg_method -> desired aggregation method to plot
+    bert, bhattacharyya, separated, semiseparated -> dictionaries containg the frequency of the ranking aparitions for each of the methods
+    '''
+    keys_BERT, values_BERT = list(bert.keys()), list(bert.values())
+    keys_bhattacharyya, values_bhattacharyya = list(bhattacharyya.keys()), list(bhattacharyya.values())
+    keys_separated, values_separated = list(separated.keys()), list(separated.values())
+    keys_semiseparated, values_semiseparated = list(semiseparated.keys()), list(semiseparated.values())
+
+
+    cumulative_BERT = np.cumsum(values_BERT)
+    cumulative_bhattacharyya = np.cumsum(values_bhattacharyya)
+    cumulative_separated = np.cumsum(values_separated)
+    cumulative_semiseparated = np.cumsum(values_semiseparated)
+
+    ax.plot(keys_BERT, cumulative_BERT, marker='s', color='blue', label='original')
+    ax.plot(keys_bhattacharyya, cumulative_bhattacharyya, marker='o', color='red', label='number of publications')
+    ax.plot(keys_separated, cumulative_separated, marker='^', color='green', label='number of IPs')
+    ax.plot(keys_semiseparated, cumulative_semiseparated, marker='+', color='orange', label='combined')
+
+    ax.set_xlabel('Depth', fontsize=26)
+    ax.set_ylabel('Cumulative Frequency', fontsize=26)
+    ax.set_title(title, fontsize=30)
+
+    ax.legend(fontsize=24)
+    ax.tick_params(axis='both', which='major', labelsize=20)
+    ax.grid(True)
+
 def contar_repeticiones(lista):
     '''
     Function for counting the repetitions of a number in a list
