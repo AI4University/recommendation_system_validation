@@ -66,6 +66,10 @@ def get_score_cluster(ranking, id_researcher, call):
 
     # detect if we are recommending researchers or calls
     if 'id_researcher' in ranking.columns.tolist():
+        # if similarity is 0 return 0
+        if ranking[ranking['id_researcher'] == id_researcher].reset_index()['similarity'][0] == 0.0:
+            return 0
+
         indice_valor_exacto = ranking.loc[ranking['id_researcher'] == id_researcher].index[0]
         ranking = ranking.iloc[:indice_valor_exacto + 1]
         posicion = ranking.shape[0]
@@ -80,6 +84,9 @@ def get_score_cluster(ranking, id_researcher, call):
 
 
     else:
+        if ranking[ranking['Call'] == call].reset_index()['similarity'][0] == 0.0:
+            return 0
+
         indice_valor_exacto = ranking.loc[ranking['Call'] == call].index[0]
         ranking = ranking.iloc[:indice_valor_exacto + 1]
         posicion = ranking.shape[0]
